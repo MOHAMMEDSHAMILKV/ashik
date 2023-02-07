@@ -47,26 +47,37 @@ const login = (username, password) => {
 const addjob = (jobname, description, place, time, company, number) => {
     return db.Job.findOne({ jobname })
         .then(data => {
-            const newJob = new db.Job({ jobname, description, place, time, company, number })
-            newJob.save()
-            return {
-                statuscode: 200,
-                status: true,
-                message: "Job Add successfully",
+            if (data) {
+                return {
+                    statuscode: 400,
+                    status: false,
+                    message: "already exist",
+
+                }
             }
-        }        )
+            else {
+                const newJob = new db.Job({ jobname, description, place, time, company, number })
+                newJob.save()
+                return {
+                    statuscode: 200,
+                    status: true,
+                    message: "Job Add successfully",
+                }
+            }
+        })
 }
 
 
 
-const joblist = (jobname, description, place, time, company, number) => {
-    return db.Job.findOne({ jobname })
+const joblist = () => {
+    return db.Job.find()
         .then(data => {
             if (data) {
                 return {
                     statuscode: 200,
                     status: true,
                     message: "job show successful",
+                    data: data
                 }
             } else {
                 return {
@@ -75,10 +86,22 @@ const joblist = (jobname, description, place, time, company, number) => {
                     message: "not show"
                 }
             }
-        }
-        )
+        })
+}
+
+const jobcardview = (jobname) => {
+    return db.Job.find({ jobname })
+        .then(data => {
+            if (data) {
+                return {
+                    statuscode: 200,
+                    status: true,
+                    data: data
+                }
+            }
+        })
 }
 
 
 
-module.exports = { register, login, addjob ,joblist}
+module.exports = { register, login, addjob, joblist, jobcardview }

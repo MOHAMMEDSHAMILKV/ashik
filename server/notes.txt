@@ -1,0 +1,59 @@
+server 
+
+{const(express,cors,app), app.use(express,cors), listen}
+
+package.json                --  npm init
+nodemodule (express)        --  npm i express
+create index.js file        --  index.js
+conncecting backend and frondend    --  npm i cors   --    
+
+index.js
+    import express              --      const express = require('express')
+    apps using exprsess         --      const app = express()
+    backend and frondend conect  --     const cors=require('cors')
+    use json parser for server responses    --  app.use(express.json())
+    apps using  cors            --      app.use(cors({    origin: '*' }))
+    setup port number           --      app.listen(3000, () => {  ..}
+
+import service.js, db.js
+
+calling servc operation
+        app.get('/joblist', (req, res) => {
+            service.joblist()
+                .then(data => {
+                    res.status(data.statuscode).json(data)
+        })
+            
+
+
+db.js---
+backend and mongodb connection (mongoose)  --    npm i mongoose
+    //import mongoose            --    const mongoose =  require('mongoose')
+    //connect establshing        --    mongoose.connect(mongodb://localhost:27017/collctnname)
+
+    // model creation         --    const Job=mongoose.model('Job',{        
+                                        id:Number,  //schema creation
+                                        name:String        })
+
+    //export model            --    module.exports= { Job }
+
+    
+serviec.js---
+
+for resolve operation
+
+        const joblist = () => {
+            return db.Job.find()
+                .then(data => {
+                    if (data) {
+                        return {
+                            statuscode: 200,
+                            status: true,
+                            message: "job show successful",
+                            data:data                        }
+                    } else {
+                        return { statuscode: 400,
+                        } }    } ) }
+
+
+            
